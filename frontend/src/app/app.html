@@ -1,26 +1,57 @@
-<div class="container">
-  <h1>Lista de Tareas</h1>
-  <p class="subtitle">Integración Continua — Politécnico Grancolombiano</p>
+<div class="page">
+  <div class="card">
+    <div class="header">
+      <div class="header-icon">✓</div>
+      <div>
+        <h1>Lista de Tareas</h1>
+        <p class="subtitle">Integración Continua — Politécnico Grancolombiano</p>
+      </div>
+    </div>
 
-  <div class="input-row">
-    <input
-      type="text"
-      [(ngModel)]="newTitle"
-      placeholder="Nueva tarea..."
-      (keyup.enter)="addTask()"
-    />
-    <button (click)="addTask()">Agregar</button>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">{{ tasks.length }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">{{ tasks | doneCount }}</span>
+        <span class="stat-label">Completadas</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">{{ tasks.length - (tasks | doneCount) }}</span>
+        <span class="stat-label">Pendientes</span>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <input
+        type="text"
+        [(ngModel)]="newTitle"
+        placeholder="¿Qué necesitas hacer?"
+        (keyup.enter)="addTask()"
+      />
+      <button class="btn-add" (click)="addTask()">
+        <span>+</span> Agregar
+      </button>
+    </div>
+
+    <ul class="task-list">
+      @for (task of tasks; track task.id) {
+        <li [class.done]="task.done">
+          <button class="check-btn" (click)="toggleTask(task.id)" [class.checked]="task.done">
+            @if (task.done) { ✓ }
+          </button>
+          <span class="task-title" (click)="toggleTask(task.id)">{{ task.title }}</span>
+          <button class="delete" (click)="deleteTask(task.id)" title="Eliminar">✕</button>
+        </li>
+      }
+      @if (tasks.length === 0) {
+        <li class="empty">
+          <div class="empty-icon">📋</div>
+          <p>No hay tareas aún.</p>
+          <p class="empty-hint">¡Agrega una arriba para empezar!</p>
+        </li>
+      }
+    </ul>
   </div>
-
-  <ul class="task-list">
-    @for (task of tasks; track task.id) {
-      <li [class.done]="task.done">
-        <span (click)="toggleTask(task.id)">{{ task.title }}</span>
-        <button class="delete" (click)="deleteTask(task.id)">✕</button>
-      </li>
-    }
-    @if (tasks.length === 0) {
-      <li class="empty">No hay tareas. ¡Agrega una!</li>
-    }
-  </ul>
 </div>

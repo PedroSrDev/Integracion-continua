@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskService, Task } from './task.service';
+import { DoneCountPipe } from './done-count.pipe';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DoneCountPipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
