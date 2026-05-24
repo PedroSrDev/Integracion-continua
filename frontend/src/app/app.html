@@ -1,0 +1,26 @@
+<div class="container">
+  <h1>Lista de Tareas</h1>
+  <p class="subtitle">Integración Continua — Politécnico Grancolombiano</p>
+
+  <div class="input-row">
+    <input
+      type="text"
+      [(ngModel)]="newTitle"
+      placeholder="Nueva tarea..."
+      (keyup.enter)="addTask()"
+    />
+    <button (click)="addTask()">Agregar</button>
+  </div>
+
+  <ul class="task-list">
+    @for (task of tasks; track task.id) {
+      <li [class.done]="task.done">
+        <span (click)="toggleTask(task.id)">{{ task.title }}</span>
+        <button class="delete" (click)="deleteTask(task.id)">✕</button>
+      </li>
+    }
+    @if (tasks.length === 0) {
+      <li class="empty">No hay tareas. ¡Agrega una!</li>
+    }
+  </ul>
+</div>
