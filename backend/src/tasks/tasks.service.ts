@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-interface Task {
+export interface Task {
   id: number;
   title: string;
   done: boolean;
