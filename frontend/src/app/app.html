@@ -1,9 +1,8 @@
 <div class="page">
   <div class="card">
     <div class="header">
-      <div class="header-icon">✓</div>
       <div>
-        <h1>Lista de Tareas</h1>
+        <h1>Gestor de Tareas</h1>
         <p class="subtitle">Integración Continua — Politécnico Grancolombiano</p>
       </div>
     </div>
@@ -27,29 +26,23 @@
       <input
         type="text"
         [(ngModel)]="newTitle"
-        placeholder="¿Qué necesitas hacer?"
+        placeholder="Nueva tarea..."
         (keyup.enter)="addTask()"
       />
-      <button class="btn-add" (click)="addTask()">
-        <span>+</span> Agregar
-      </button>
+      <button class="btn-add" (click)="addTask()">Agregar</button>
     </div>
 
     <ul class="task-list">
       @for (task of tasks; track task.id) {
         <li [class.done]="task.done">
-          <button class="check-btn" (click)="toggleTask(task.id)" [class.checked]="task.done">
-            @if (task.done) { ✓ }
-          </button>
+          <button class="check-btn" (click)="toggleTask(task.id)" [class.checked]="task.done"></button>
           <span class="task-title" (click)="toggleTask(task.id)">{{ task.title }}</span>
-          <button class="delete" (click)="deleteTask(task.id)" title="Eliminar">✕</button>
+          <button class="delete" (click)="deleteTask(task.id)">Eliminar</button>
         </li>
       }
       @if (tasks.length === 0) {
         <li class="empty">
-          <div class="empty-icon">📋</div>
-          <p>No hay tareas aún.</p>
-          <p class="empty-hint">¡Agrega una arriba para empezar!</p>
+          <p>No hay tareas registradas.</p>
         </li>
       }
     </ul>
