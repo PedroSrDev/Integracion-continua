@@ -9,6 +9,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                deleteDir()
                 echo 'Clonando repositorio...'
                 checkout scm
             }
