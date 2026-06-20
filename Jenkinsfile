@@ -52,6 +52,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Desplegando contenedores...'
+                sh 'docker-compose down --remove-orphans || true'
+                sh 'docker rm -f backend frontend || true'
                 sh 'docker-compose up -d'
             }
         }
