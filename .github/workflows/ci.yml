@@ -1,0 +1,75 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-backend:
+    name: Pruebas Backend (NestJS)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias del backend
+        working-directory: backend
+        run: npm ci
+
+      - name: Ejecutar pruebas unitarias
+        working-directory: backend
+        run: npm test -- --passWithNoTests --forceExit
+
+  build-docker:
+    name: Build Imágenes Docker
+    runs-on: ubuntu-latest
+    needs: test-backend
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build imagen Backend
+        run: docker build -t todo-backend:latest ./backend
+
+      - name: Build imagen Frontend
+        run: docker build -t todo-frontend:latest ./frontend
+
+      - name: Verificar imágenes generadas
+        run: docker images | grep todo
+
+  deploy:
+    name: Deploy con Docker Compose
+    runs-on: ubuntu-latest
+    needs: build-docker
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Levantar contenedores
+        run: |
+          docker compose up -d
+          sleep 5
+          docker compose ps
+
+      - name: Verificar estado de contenedores
+        run: docker compose ps
+
+      - name: Apagar contenedores
+        if: always()
+        run: docker compose down

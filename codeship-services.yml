@@ -1,0 +1,12 @@
+backend:
+  build:
+    image: todo-backend
+    dockerfile: backend/Dockerfile
+  environment:
+    NODE_ENV: production
+    PORT: "3000"
+
+frontend:
+  build:
+    image: todo-frontend
+    dockerfile: frontend/Dockerfile

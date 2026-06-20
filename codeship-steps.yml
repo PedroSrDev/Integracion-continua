@@ -1,0 +1,11 @@
+- name: test_backend
+  service: backend
+  command: npm test -- --passWithNoTests --forceExit
+
+- name: build_images
+  type: parallel
+  steps:
+    - service: backend
+      command: echo "Backend image OK"
+    - service: frontend
+      command: echo "Frontend image OK"
