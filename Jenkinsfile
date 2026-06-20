@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo 'Instalando dependencias del backend (NestJS)...'
                 dir('backend') {
-                    bat 'npm install'
+                    sh 'npm install'
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo 'Ejecutando pruebas unitarias...'
                 dir('backend') {
-                    bat 'npm test -- --passWithNoTests'
+                    sh 'npm test -- --passWithNoTests --forceExit'
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 echo 'Compilando backend...'
                 dir('backend') {
-                    bat 'npm run build'
+                    sh 'npm run build'
                 }
             }
         }
@@ -40,14 +40,14 @@ pipeline {
         stage('Build - Docker Images') {
             steps {
                 echo 'Construyendo imagenes Docker...'
-                bat 'docker compose build'
+                sh 'docker compose build'
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Desplegando contenedores...'
-                bat 'docker compose up -d'
+                sh 'docker compose up -d'
             }
         }
 
